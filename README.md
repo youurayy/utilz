@@ -8,11 +8,11 @@
 
 ## Examples
 
-### watchFile(fileName?)
+### watchFile(fileName)
 
 Watch the specificed .js file and quit the server to restart if it has changed.
 Best used with Supervisord, or Forever (when it matures).
-`filename`: the file to watch, may be relative to `process.cwd()`; current .js if omitted.
+`filename`: the file to watch, may be relative to `process.cwd()`.
 
 ```js
 utilz.watchFile();
