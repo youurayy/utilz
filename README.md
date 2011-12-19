@@ -12,6 +12,7 @@
 
 Watch the specificed .js file and quit the server to restart if it has changed.
 Best used with Supervisord, or Forever (when it matures).
+
 `filename`: the file to watch, may be relative to `process.cwd()`.
 
 ```js
@@ -25,6 +26,7 @@ In production (NODE_ENV === 'production'), this will not restart imediatelly, bu
 ### timeSpan(timespanInMs)
 
 Display time duration in human readable format, from number of days to milliseconds.
+
 `t`: the time interval in milliseconds.
 
 ```js
@@ -42,7 +44,9 @@ This will display an interval in the form of:
 ### formatNumber(number, fractionDigits)
 
 Format a number to the number of decimal places specified.
+
 `n`: the number to format.
+
 `fr`: the number of decimal places.
 
 ```js
