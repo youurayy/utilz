@@ -15,8 +15,8 @@ Best used with Supervisord, or Forever (when it matures).
 `filename`: the file to watch, may be relative to `process.cwd()`.
 
 ```js
-utilz.watchFile();
-utilz.watchFile(__dirname + '/other.js');
+utilz.watchFile(__filename); // watch this .js
+utilz.watchFile(__dirname + '/other.js'); // watch some other .js
 ```
 
 In production (NODE_ENV === 'production'), this will not restart imediatelly, but rather wait 2 seconds, to allow for all files to be replaced first, in the case of a full update.
