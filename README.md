@@ -13,7 +13,7 @@
 Watch the specificed .js file and quit the server to restart if it has changed.
 Best used with Supervisord, or Forever (when it matures).
 
-`filename`: the file to watch, may be relative to `process.cwd()`.
+`fileName`: the file to watch, may be relative to `process.cwd()`.
 
 ```js
 utilz.watchFile(__filename); // watch this .js
@@ -27,7 +27,7 @@ In production (NODE_ENV === 'production'), this will not restart imediatelly, bu
 
 Display time duration in human readable format, from number of days to milliseconds.
 
-`t`: the time interval in milliseconds.
+`timespanInMs`: the time interval in milliseconds.
 
 ```js
 var t1 = Date.now();
@@ -45,9 +45,9 @@ This will display an interval in the form of:
 
 Format a number to the number of decimal places specified.
 
-`n`: the number to format.
+`number`: the number to format.
 
-`fr`: the number of decimal places.
+`fractionDigits`: the number of decimal places.
 
 ```js
 var n = 3.14159265;
