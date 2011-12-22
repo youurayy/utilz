@@ -61,7 +61,7 @@ This will display:
 	123,456
 
 
-### sign
+### sign(obj, secret, timed)
 
 Sign an object using sha256, optionally add timestamp. The `sig` and `ts` are reserved property names in the object.
 
@@ -73,7 +73,7 @@ Sign an object using sha256, optionally add timestamp. The `sig` and `ts` are re
 See below for complete example.
 
 
-### verify
+### verify(obj, secret, timeWindowMs)
 
 Verify a sha256 signed object, optionally check if timestamp falls into the specified window.
 
@@ -104,11 +104,12 @@ console.log('success');
 This will print:
 
 	{ f: 'my func', a: 'data 1', b: 'data 2' }
-	{ f: 'my func', a: 'data 1', b: 'data 2', ts: 1324557616927, sig: '1adb63e40223fe95a543983de5c4b4d164a84c05af3effebd1157c50e5b1a533' }
+	{ f: 'my func', a: 'data 1', b: 'data 2', ts: 1324557616927, 
+		sig: '1adb63e40223fe95a543983de5c4b4d164a84c05af3effebd1157c50e5b1a533' }
 	success
 
 
-### mongodbInitCollections
+### mongodbInitCollections(db, cols, cb)
 
 Initialize mongodb (node-mongodb-native) collections and hook them right onto the db objects to prevent code litter.
 
@@ -121,7 +122,7 @@ Initialize mongodb (node-mongodb-native) collections and hook them right onto th
 See below for complete example.
 
 
-### mongodbEnsureIndexes
+### mongodbEnsureIndexes(col, indexes, cb)
 
 Initialize mongodb (node-mongodb-native) indexes for a specific collection.
 
