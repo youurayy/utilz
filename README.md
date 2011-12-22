@@ -61,12 +61,59 @@ This will display:
 	123,456
 
 
+### sign
+
+Sign an object using sha256, optionally add timestamp. The `sig` and `ts` are reserved property names in the object.
+
+* `obj`: the object to sign
+* `secret`: the secret key
+* `timed`: boolean, whether to add timestamp for later checking
+* `return`: the signature, which needs to be assigned to `obj.sig`
+
+See below for complete example.
+
+
+### verify
+
+Verify a sha256 signed object, optionally check if timestamp falls into the specified window.
+
+* `obj`: the object to verify
+* `secret`: the secret key
+* `timeWindowMs`: optional, the time window tolerance for the timestamp, in milliseconds
+* `return`: error message or null on success
+
+```js
+var utilz = require('utilz');
+var laeh = require('laeh');
+var _e = laeh._e;
+var _x = laeh._x;
+
+var obj = { f: 'my func', a: 'data 1', b: 'data 2' };
+
+console.log(obj);
+
+obj.sig = utilz.sign(obj, 'my secret', true);
+
+console.log(obj);
+
+_e(utilz.verify(obj, 'my secret', 5000));
+
+console.log('success');
+```
+
+This will print:
+
+	{ f: 'my func', a: 'data 1', b: 'data 2' }
+	{ f: 'my func', a: 'data 1', b: 'data 2', ts: 1324557616927, sig: '1adb63e40223fe95a543983de5c4b4d164a84c05af3effebd1157c50e5b1a533' }
+	success
+
+
 ### mongodbInitCollections
 
 Initialize mongodb (node-mongodb-native) collections and hook them right onto the db objects to prevent code litter.
 
 * `db`: the DB object
-* cols: array with strings, the names of the collections;
+* `cols`: array with strings, the names of the collections;
         optionally, an object where values are names of mongo collections,
         and keys are aliases under which to store them on the db object
 * `cb`: the callback to call when done
@@ -105,10 +152,10 @@ async.series([
 		utilz.mongodbInitCollections(db, [ 'col1', 'col2' ], cb);
 	}),
 	_x(function(cb) {
-		utilz.mongodbEnsureIndexes(db.col1, [ [ 'field1' ], [ 'field2' ] ], cb);
+		utilz.mongodbEnsureIndexes(db.col1, [[ 'field1' ], [ 'field2' ]], cb);
 	}),
 	_x(function(cb) {
-		utilz.mongodbEnsureIndexes(db.col2, [ [ 'field3' ], [ 'field4' ] ], cb);
+		utilz.mongodbEnsureIndexes(db.col2, [[ 'field3' ], [ 'field4' ]], cb);
 	})
 ],
 function(err) {
