@@ -109,64 +109,51 @@ This will print:
 	success
 
 
-### mongodbInitCollections(db, cols, cb)
-
-Initialize mongodb (node-mongodb-native) collections and hook them right onto the db objects to prevent code litter.
-
-* `db`: the DB object
-* `cols`: array with strings, the names of the collections;
-        optionally, an object where values are names of mongo collections,
-        and keys are aliases under which to store them on the db object
-* `cb`: the callback to call when done
-
-See below for complete example.
-
-
-### mongodbEnsureIndexes(col, indexes, cb)
+### mongodbInit(mongodb, dbName, srvHost, srvPort, config, cb)
 
 Initialize mongodb (node-mongodb-native) indexes for a specific collection.
 
-* `col`: the initialized collection
-* `indexes`: array with strings, the names of the indexes
-* `cb`: the callback to call when done
-
-Complete example of to open a MongoDB database using `mongodbInitCollections` and `mongodbEnsureIndexes`, plus helpers from `asinc-mini` and `LAEH`.
+* `mongodb`: the mongodb module
+* `dbName`: name of the database you want to use
+* `srvHost`: the computer running mongod
+* `srvPort`: the port mongod listens at
+* `config`: config object with collection names and their indexes, see below
+* `cb`: finish callback in form of `function(err, db)`, where the `db` is the initialized mongo database
 
 ```js
-var utilz = require('utilz');
-var async = require('async-mini');
-var laeh = require('laeh');
-var mongodb = require('mongodb');
-var _e = laeh._e;
-var _x = laeh._x;
-var db;
+var mongo = require('mongo');
 
-async.series([
-	_x(function(cb) {
-		new mongodb.Db('example4', new mongodb.Server('localhost', 27017))
-			.open(_x(function(err, _db) {
-			db = _db;
-			cb();
-		}, cb, true));
-	}),
-	_x(function(cb) {
-		utilz.mongodbInitCollections(db, [ 'col1', 'col2' ], cb);
-	}),
-	_x(function(cb) {
-		utilz.mongodbEnsureIndexes(db.col1, [[ 'field1' ], [ 'field2' ]], cb);
-	}),
-	_x(function(cb) {
-		utilz.mongodbEnsureIndexes(db.col2, [[ 'field3' ], [ 'field4' ]], cb);
-	})
-],
-function(err) {
-	_e(err);
-	// the collections are now usable at db.col1 and db.col2, e.g.
-	db.col1.find({ field1: 'abc' }).toArray(function(err, arr) {
+var cfg = {
+	col1: [[ 'email' ]],
+	col2: [[ 'created' ], [ 'name' ], [ 'age' ]]
+};
+
+utilz.mongodbInit(mongodb, 'amazorro', 'localhost', 27017, cfg, function(err, db) {
+
+	if(err)
+		throw err;
+
+	// the collections are now usable at db.col1 and db.col2, e.g.:
+	db.col1.find({ email: 'abc@def.com' }).toArray(function(err, arr) {
 		console.log(arr);
 		db.close();
 	});
+
 });
+```
+
+
+### mongodbFAMCheck(err, msg)
+
+Special treatment for mongodb's findAndModify(), when the object is not found.
+
+When you use findAndModify with a query which finds no object, mongo reports this as object not found, which you may find misleading as with all other functions, the result is simply set to null. Additionaly, the message "object not found" is too generic to provide any value. This little function will simply isolate this special case and allows you attach your special message to it. Make sure to instruct `_x` to not intercept the `err` parameter, as in this case the `mongodbFAMCheck` fully takes over.
+
+```js
+col.findAndModify(query, sort, update, { new: true }, _x(cb, false, function(err, result) {
+	utilz.mongodbFAMCheck(err, 'Concurrent record allocation; sending the client over');
+	...
+}));
 ```
 
 
