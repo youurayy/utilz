@@ -156,6 +156,18 @@ col.findAndModify(query, sort, update, { new: true }, _x(cb, false, function(err
 }));
 ```
 
+### randomString(opts)
+
+Generate a random string based on the passed options. Example options (the probabilities are checked from smallest to largest via less-than-or-equal):
+
+    {
+        length: 10,
+        ratios: [
+            { type: 'numeric', probability: .2 },
+            { type: 'upper', probability: .6 },
+            { type: 'lower', probability: .8 }
+        ]
+    }
 
 ### More...
 

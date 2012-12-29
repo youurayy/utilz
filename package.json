@@ -3,7 +3,7 @@
 	"name": "utilz",
 	"description": "Various Small Utility Functions for Node.js",
 	"keywords": [ "utility", "functions" ],
-	"version": "0.1.5",
+	"version": "0.1.7",
 	"homepage": "http://github.com/ypocat/utilz",
 	"repository": {
 		"type": "git",
