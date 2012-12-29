@@ -165,7 +165,7 @@ Generate a random string based on the passed options. Example options (the proba
         ratios: [
             { type: 'numeric', probability: .2 },
             { type: 'upper', probability: .6 },
-            { type: 'lower', probability: .8 }
+            { type: 'lower', probability: 1 }
         ]
     }
 
