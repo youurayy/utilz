@@ -124,6 +124,7 @@ Initialize mongodb (node-mongodb-native) indexes for a specific collection.
 var mongo = require('mongo');
 
 var cfg = {
+    opts: { safe: true }, // options for the mongodb driver
 	col1: [[ 'email' ]],
 	col2: [[ 'created' ], [ 'name' ], [ 'age' ]]
 };
